@@ -1,0 +1,30 @@
+{
+    "name": "christianhanggra/bizzy-magento2",
+    "description": "Bizzy Magento2 Repository for Laravel 5.3",
+    "keywords": [
+        "laravel",
+        "magento2",
+        "guzzle"
+    ],
+    "homepage": "https://github.com/christianhanggra/bizzy-magento2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Hanggra",
+            "email": "christianhanggra@gmail.com",
+            "homepage": "https://github.com/christianhanggra",
+            "role": "Tech Enthusiast"
+        }
+    ],
+    "require": {
+        "nesbot/carbon": "~1.21",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Christianhanggra\\Bizzy\\Magento2\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
