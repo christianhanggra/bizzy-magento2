@@ -5,7 +5,7 @@ namespace Christianhanggra\Bizzy\Magento2;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\JsonResponse;
 use Christianhanggra\Bizzy\Magento2\Contracts\MageRestInterface;
 
 class MageRest implements MageRestInterface
@@ -60,11 +60,8 @@ class MageRest implements MageRestInterface
 		try {
 			$content = $this->client->request($method, $endpoint, $this->options);
 			return $this->response($content);
-        } catch (ClientException $e) {
-		    echo $e->getMessage();
-		    //echo $e->getCode(); 
-		    //echo Psr7\str($e->getRequest());
-		    //echo Psr7\str($e->getResponse());
+        } catch (RequestException $e) {
+        	return $this->handleException($e);
 		}
 	}
 
@@ -85,8 +82,8 @@ class MageRest implements MageRestInterface
 		try {
             $content = $this->client->get($endpoint, $this->options);
             return $this->response($content);
-        } catch (ClientException $e) {
-		    echo $e->getMessage();
+        } catch (RequestException $e) {
+        	return $this->handleException($e);
 		}
 	}
 
@@ -107,8 +104,8 @@ class MageRest implements MageRestInterface
 		try {
             $content = $this->client->post($endpoint, $this->options);
             return $this->response($content);
-        } catch (ClientException $e) {
-		    echo $e->getMessage();
+        } catch (RequestException $e) {
+        	return $this->handleException($e);
 		}
 	}
 
@@ -129,8 +126,8 @@ class MageRest implements MageRestInterface
 		try {
             $content = $this->client->put($endpoint, $this->options);
             return $this->response($content);
-        } catch (ClientException $e) {
-		    echo $e->getMessage();
+        } catch (RequestException $e) {
+        	return $this->handleException($e);
 		}
 	}
 
@@ -151,8 +148,35 @@ class MageRest implements MageRestInterface
 		try {
             $content = $this->client->delete($endpoint, $this->options);
             return $this->response($content);
-        } catch (ClientException $e) {
-		    echo $e->getMessage();
+        } catch (RequestException $e) {
+        	return $this->handleException($e);
+		}
+	}
+
+	/*
+	 * Function handleException
+	 *
+	 * Tranform json decoding to array
+	 * https://stackoverflow.com/questions/19748105/handle-guzzle-exception-and-get-http-body
+	 *
+	 * @param string $exception
+	 * @return array
+	 */
+	public function handleException($e)
+	{
+		if ($e->hasResponse()) {
+			$arr['error'] = true;
+			$arr['code'] = (int) $e->getCode();
+			$exception = (string) $e->getResponse()->getBody();			
+			$exception = json_decode($exception, true);
+			return array_merge($arr, $exception);
+			//return new JsonResponse($exception, $e->getCode());
+		}else{
+			$arr['error'] = true;
+			$arr['code'] = (int) $e->getCode();
+			$arr['message'] = $e->getMessage();
+			return $arr;
+			//return new JsonResponse($e->getMessage(), 503);
 		}
 	}
 
@@ -168,5 +192,7 @@ class MageRest implements MageRestInterface
 	{
         return json_decode(@$content->getBody(), true);
 	}
+
+
 
 }

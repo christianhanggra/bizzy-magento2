@@ -71,6 +71,16 @@ Interface MageRestInterface
 	public function delete($url, $params=[]);
 
 	/*
+	 * Function handleException
+	 *
+	 * Tranform json decoding to array
+	 *
+	 * @param string $exception
+	 * @return array
+	 */
+	public function handleException($e);
+
+	/*
 	 * Function response
 	 *
 	 * Tranform json decoding to array
