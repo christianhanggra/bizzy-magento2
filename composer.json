@@ -4,7 +4,9 @@
     "keywords": [
         "laravel",
         "magento2",
-        "guzzle"
+        "bizzy",
+        "select",
+        "rest"
     ],
     "homepage": "https://github.com/christianhanggra/bizzy-magento2",
     "license": "MIT",
@@ -18,6 +20,9 @@
     ],
     "require": {
         "nesbot/carbon": "~1.21",
+        "illuminate/support": "5.3.*",
+        "illuminate/contracts": "5.3.*",
+        "illuminate/container": "5.3.*",
         "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {
